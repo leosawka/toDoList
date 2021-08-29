@@ -3,8 +3,10 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const methodOverride = require('method-override');
 const session = require('express-session');
+
 //Initializations
 const server = express();
+
 //Settings
 server.set('port', process.env.PORT || 3000);
 server.set('path', path.join(__dirname, 'views'));
@@ -15,8 +17,9 @@ server.engine('.hbs', exphbs({
   extname: '.hbs'
 }));
 server.set('view engine', '.hbs');
+
 //Middlewares
-server.use(express.utlencoded({extended: false}))
+server.use(express.urlencoded({extended: false}))
 server.use(methodOverride('_method'));
 server.use(session({
   secret: 'encoder hash',
@@ -27,10 +30,13 @@ server.use(session({
 //Global Variables
 
 //Routes
+server.use(require('./routes/index'));
+server.use(require('./routes/notes'));
+server.use(require('./routes/users'));
 
 //Static Files
 
 //Server listening
-server.listening(server.get('port'), () => {
+server.listen(server.get('port'), () => {
   console.log('Server on port', server.get('port'));
 });
