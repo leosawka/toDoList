@@ -6,10 +6,11 @@ const session = require('express-session');
 
 //Initializations
 const server = express();
+require('./database')
 
 //Settings
-server.set('port', process.env.PORT || 3000);
-server.set('path', path.join(__dirname, 'views'));
+server.set('port', process.env.PORT || 80);// 80 puerto por defecto http://
+server.set('views', path.join(__dirname, '/views'));
 server.engine('.hbs', exphbs({
   defaultLayout: 'main',
   layoutsDir: path.join(server.get('views'), 'layouts'),
@@ -35,6 +36,7 @@ server.use(require('./routes/notes'));
 server.use(require('./routes/users'));
 
 //Static Files
+server.use(express.static(path.join(__dirname, 'public')));
 
 //Server listening
 server.listen(server.get('port'), () => {
